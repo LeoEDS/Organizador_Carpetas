@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Materias {
     private int id;
-    private ArrayList<String> listaMaterias;
+    String listaMaterias;
 
-    public Materias(int id, ArrayList<String> listaMaterias) {
+    public Materias(int id,String listaMaterias) {
         this.id = id;
         this.listaMaterias = listaMaterias;
     }
@@ -19,11 +19,11 @@ public class Materias {
         this.id = id;
     }
 
-    public ArrayList<String> getListaMaterias() {
+    public String getListaMaterias() {
         return listaMaterias;
     }
 
-    public void setListaMaterias(ArrayList<String> listaMaterias) {
+    public void setListaMaterias(String listaMaterias) {
         this.listaMaterias = listaMaterias;
     }
     
