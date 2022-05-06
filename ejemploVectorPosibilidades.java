@@ -2,12 +2,16 @@ import java.util.*;
 
 
 public class ejemplo {
+    static int cantMaterias=10; // Comenzando desde 1, NO desde 0
 
-    // int vectorCombinaciones[] = new int[999999999];
-    static int totalPosibilidades[] = {0,1,2, 3, 4, 5, 6, 7, 8, 9};
+    static int totalPosibilidades[] = new int [cantMaterias];
+    static int materiasPorCarpeta=3;
 
     public static void main (String args[]) {
 
+        for(int i=0;i<cantMaterias;i++){
+            totalPosibilidades[i]=i;
+        }
         System.out.println("Cargando...");
         helper(totalPosibilidades, 0);
         System.out.println();
@@ -16,10 +20,11 @@ public class ejemplo {
         System.out.println();
         System.out.println();
         for(int i=0;i<posibilidades(totalPosibilidades.length);i++) {
-            for(int x=0;x<totalPosibilidades.length; x++)
-                System.out.print(v[i][x] + " ");
+            for(int x=0;x<totalPosibilidades.length; x++){
+                    if(x%materiasPorCarpeta==0) System.out.println();
+                    System.out.print(v[i][x] + " ");
+            }
             System.out.println();
-
         }
 
     }
@@ -30,17 +35,10 @@ public class ejemplo {
     public static void helper(int[] array, int pos){  
         if(pos >= array.length - 1){   
             for(int i = 0; i < array.length-1; i++){  
-                // System.out.print(array[i] + ", ");  
                 v[tupla][i]=array[i];
-                // System.out.print("( " + i + " ) " );
-                // System.out.println("aca -> [" + tupla + ";" + i + "]");
             }  
             if(array.length > 0)   
-                // System.out.print(array[array.length - 1]);  
-                // System.out.print("(( " + array.length + " )) " );
                 v[tupla][array.length-1]=array[array.length-1];
-                // System.out.println(", aca -> [" + tupla + ";" + (array.length - 1) + "]");
-            // System.out.println();  
             tupla++;
             return;  
         }  
