@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class Organizador {
         static ArrayList<Materias> listaMaterias = new ArrayList();
         static ArrayList<Dias> diasMaterias = new ArrayList();
+        static int v[][];
         static int materiasPorCarpeta;
 
     public static void main(String[] args) {
@@ -56,32 +57,32 @@ public class Organizador {
             totalPosibilidades[i]=i;
         }
         System.out.println("Cargando las Posibilades...");
+        v = new int[posibilidades(listaMaterias.size())][listaMaterias.size()];
         helper(totalPosibilidades, 0);
         for(i=0;i<5;i++) System.out.println();
         
         for(i=0;i<posibilidades(totalPosibilidades.length);i++) {
             for(int x=0;x<totalPosibilidades.length; x++){
+                    // ACA VA EL CODIGO DE COMPARACION
                     if(x%materiasPorCarpeta==0) System.out.println();
                     System.out.print(v[i][x] + " ");
             }
             System.out.println();
-        }
-               
+        } 
         
                 
-        // ACA VA EL CODIGO DE COMPARACION
         
         
         
         
     }
     
-    static int v[][] = new int[posibilidades(listaMaterias.size())][listaMaterias.size()];
+
     static int tupla=0;
 
     public static void helper(int[] array, int pos){  
         if(pos >= array.length - 1){   
-            for(int i = 0; i < array.length-1; i++){  
+            for(int i = 0; i < array.length-1; i++){
                 v[tupla][i]=array[i];
             }  
             if(array.length > 0)   
