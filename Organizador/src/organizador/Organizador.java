@@ -69,12 +69,7 @@ public class Organizador {
             }
             System.out.println();
         } 
-        
-                
-        
-        
-        
-        
+
     }
     
 
@@ -90,7 +85,7 @@ public class Organizador {
             tupla++;
             return;  
         }  
-  
+
         for(int i = pos; i < array.length; i++){   
           
             int t = array[pos];  

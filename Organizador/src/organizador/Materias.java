@@ -1,14 +1,12 @@
 package organizador;
 
-import java.util.ArrayList;
-
 public class Materias {
     private int id;
-    String listaMaterias;
+    private String materia;
 
-    public Materias(int id,String listaMaterias) {
+    public Materias(int id,String materia) {
         this.id = id;
-        this.listaMaterias = listaMaterias;
+        this.materia = materia;
     }
 
     public int getId() {
@@ -19,12 +17,12 @@ public class Materias {
         this.id = id;
     }
 
-    public String getListaMaterias() {
-        return listaMaterias;
+    public String getMateria() {
+        return materia;
     }
 
-    public void setListaMaterias(String listaMaterias) {
-        this.listaMaterias = listaMaterias;
+    public void setMateria(String materia) {
+        this.materia = materia;
     }
     
 }

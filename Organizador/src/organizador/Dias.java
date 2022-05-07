@@ -3,18 +3,18 @@ package organizador;
 import java.util.ArrayList;
 
 public class Dias {
-    private ArrayList<String> dia;
+    private ArrayList<String> materiasDelDia;
 
-    public Dias(ArrayList<String> dia) {
-        this.dia = dia;
+    public Dias(ArrayList<String> materiasDelDia) {
+        this.materiasDelDia = materiasDelDia;
     }
 
-    public ArrayList<String> getDia() {
-        return dia;
+    public ArrayList<String> getMateriasDelDia() {
+        return materiasDelDia;
     }
 
-    public void setDia(ArrayList<String> dia) {
-        this.dia = dia;
+    public void setMateriasDelDia(ArrayList<String> materiasDelDia) {
+        this.materiasDelDia = materiasDelDia;
     }
     
 }
