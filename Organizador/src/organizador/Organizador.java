@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Organizador {
-        static ArrayList<Materias> listaMaterias = new ArrayList();
-        static ArrayList<Dias> diasMaterias = new ArrayList();
-        static int v[][];
-        static int materiasPorCarpeta;
+        static ArrayList<Materias> listaMaterias = new ArrayList(); //ARRAY DE MATERIAS
+        static ArrayList<Dias> diasMaterias = new ArrayList(); //ARRAY DE LAS MATERIAS QUE HAY CADA DIA: EL 0 ES LUNES Y EL 4 ES VIERNNES
+        static int v[][]; //VECTOR CON TODAS LAS POSIBILIDADES DE COMBBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
+        static int materiasPorCarpeta; // NUMERO DE MATERIAS QUE HAY POR CARPETA
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
         int i=0;
+        int maximoCarpetasPorDia;
         String nombre;
 
         System.out.println("Ingresando las Materias... (INGRESE UN 0 PARA TERMINAR)");
@@ -25,7 +26,7 @@ public class Organizador {
 
         } while (!nombre.equals("0"));
         
-        int totalPosibilidades[] = new int [listaMaterias.size()]; 
+        int totalPosibilidades[] = new int [listaMaterias.size()]; // VECTOR CON NUMEROS DEL 0 AL 'X' CANTIDAD DE MATERIAS PARA ENTREGARLO A LA FUNCION QUE RELLENA LA MATRIZ CON TODAS LAS POSIBILIDADES
 
         System.out.println("");
         for(i=0; i<5; i++){
@@ -51,6 +52,8 @@ public class Organizador {
         
         System.out.print("Ingrese el Numero de Materias por Carpeta: ");
         materiasPorCarpeta = scanf.nextInt();
+        System.out.print("Ingrese el Numero Máximo de Carpetas por Dia: ");
+        int maximoCarpetasPorDia = scanf.nextInt();
         
         
         for(i=0;i<listaMaterias.size();i++){
