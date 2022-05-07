@@ -63,15 +63,17 @@ public class Organizador {
         v = new int[posibilidades(listaMaterias.size())][listaMaterias.size()];
         helper(totalPosibilidades, 0);
         for(i=0;i<5;i++) System.out.println();
-        
         for(i=0;i<posibilidades(totalPosibilidades.length);i++) {
+            int carpetas[][] = new int[(posibilidades(totalPosibilidades.length)/materiasPorCarpeta)+1][materiasPorCarpeta];
+            int hor=0,ver=0;
             for(int x=0;x<totalPosibilidades.length; x++){
                     // ACA VA EL CODIGO DE COMPARACION
-                    if(x%materiasPorCarpeta==0) System.out.println();
-                    System.out.print(v[i][x] + " ");
+                    if(x%materiasPorCarpeta==0) {hor++; ver++;
+                    carpetas[hor][ver]=v[i][x];
+                    hor++;
             }
             System.out.println();
-        } 
+        }
 
     }
     
