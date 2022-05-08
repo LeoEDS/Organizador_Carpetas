@@ -12,7 +12,7 @@ public class Organizador {
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
-        int i=1;
+        int i=0;
         int maximoCarpetasPorDia;
         String nombre;
 
@@ -67,7 +67,7 @@ public class Organizador {
         // for(i=0;i<5;i++) System.out.println();
         for(i=0;i<posibilidades(totalPosibilidades.length);i++) {
             // System.out.println("eso " + (listaMaterias.size()/materiasPorCarpeta) + " mat " + materiasPorCarpeta);
-            // System.out.println("vamos con reglones" + posibilidades(totalPosibilidades.length)/listaMaterias.size());
+            // System.out.println("vamos con reglones" + posibilidades(totalPosibilidades.length));
             int carpetas[][] = new int[listaMaterias.size()/materiasPorCarpeta][materiasPorCarpeta];
             int hor=0,ver=0;
             for(int x=1;x<listaMaterias.size(); x++){
@@ -83,6 +83,18 @@ public class Organizador {
                     ver=0;
                 }
             }
+            
+            int cantC[] = new int [5];
+            for(int x=0; x<5;x++){
+                int swap = carpetasPorDia(carpetas, diasMaterias.get(x), listaMaterias);
+                if (swap==(-1)) break; //SIGNNIFICA QUE EN LA CARPETA FALTAN MATERIAS
+                cantC[x] = swap;
+            }
+            for(int x=0;x<5;x++){
+                if(cantC[x]>materiasPorCarpeta || cantC[x]==-1) break;
+                if(x==4) imprimirCarpetaGanadora(carpetas, cantC);
+            }
+            
             // ACA VA EL CODIGO DE COMPARACION
             for(int y=0;y<listaMaterias.size()/materiasPorCarpeta;y++){
                 for(int u=0; u<materiasPorCarpeta;u++){
@@ -90,9 +102,10 @@ public class Organizador {
                 }
                 System.out.println("");
             }
-            System.out.println("");
-            System.out.println("----");
+            //System.out.println("");
+            //System.out.println("----");
             //System.out.println();
+            
         }
         /*
         for(i=0;i<);i++){
@@ -102,7 +115,14 @@ public class Organizador {
         
     }
     
-
+    public static int carpetasPorDia (int carpeta[][], Dias dia, ArrayList<Materias> materias) {
+        //COMPROBAR QUE DENTRO DE LAS CARPETA (o sea la variable carpeta[][]) SE ENCUENTRENN TODAS LAS MATERIAS (o sea los numeros de totalPosibilidades). Si no hace un return de -1
+        return -1;
+    }
+    
+    public static void imprimirCarpetaGanadora(int carpeta[][], int CantC[]){
+        //IMPRIME LA CARPETA Y LA CANTIDAD MAXIMA DE CARPETAS POR DÍA
+    }
 
     public static void helper(int[] array, int pos){  
         if(pos >= array.length - 1){   
