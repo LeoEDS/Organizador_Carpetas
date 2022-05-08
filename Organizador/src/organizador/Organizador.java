@@ -7,11 +7,12 @@ public class Organizador {
         static ArrayList<Materias> listaMaterias = new ArrayList(); //ARRAY DE MATERIAS
         static ArrayList<Dias> diasMaterias = new ArrayList(); //ARRAY DE LAS MATERIAS QUE HAY CADA DIA: EL 0 ES LUNES Y EL 4 ES VIERNNES
         static int v[][]; //VECTOR CON TODAS LAS POSIBILIDADES DE COMBBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
+        static int tupla=0;
         static int materiasPorCarpeta; // NUMERO DE MATERIAS QUE HAY POR CARPETA
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
-        int i=0;
+        int i=1;
         int maximoCarpetasPorDia;
         String nombre;
 
@@ -53,32 +54,55 @@ public class Organizador {
         System.out.print("Ingrese el Numero de Materias por Carpeta: ");
         materiasPorCarpeta = scanf.nextInt();
         System.out.print("Ingrese el Numero Máximo de Carpetas por Dia: ");
-        int maximoCarpetasPorDia = scanf.nextInt();
+        maximoCarpetasPorDia = scanf.nextInt();
         
         
-        for(i=0;i<listaMaterias.size();i++){
+        for(i=0;i<listaMaterias.size()-1;i++){
+            //System.out.println(i);
             totalPosibilidades[i]=i;
         }
         System.out.println("Cargando las Posibilades...");
         v = new int[posibilidades(listaMaterias.size())][listaMaterias.size()];
         helper(totalPosibilidades, 0);
-        for(i=0;i<5;i++) System.out.println();
+        // for(i=0;i<5;i++) System.out.println();
         for(i=0;i<posibilidades(totalPosibilidades.length);i++) {
-            int carpetas[][] = new int[(posibilidades(totalPosibilidades.length)/materiasPorCarpeta)+1][materiasPorCarpeta];
+            // System.out.println("eso " + (listaMaterias.size()/materiasPorCarpeta) + " mat " + materiasPorCarpeta);
+            // System.out.println("vamos con reglones" + posibilidades(totalPosibilidades.length)/listaMaterias.size());
+            int carpetas[][] = new int[listaMaterias.size()/materiasPorCarpeta][materiasPorCarpeta];
             int hor=0,ver=0;
-            for(int x=0;x<totalPosibilidades.length; x++){
-                    // ACA VA EL CODIGO DE COMPARACION
-                    if(x%materiasPorCarpeta==0) {hor++; ver++;
-                    carpetas[hor][ver]=v[i][x];
+            for(int x=1;x<listaMaterias.size(); x++){
+                // System.out.println(x%listaMaterias.size());
+                //System.out.println("es -> " + ((x%materiasPorCarpeta)));
+                if((x%materiasPorCarpeta)!=0) {
+                    carpetas[hor][ver]=v[i][x-1];
+                    ver++;
+                } else {
+                    carpetas[hor][ver]=v[i][x-1];
                     hor++;
+                    //System.out.println("siiiiiiiiiiii " + x);
+                    ver=0;
+                }
             }
-            System.out.println();
+            // ACA VA EL CODIGO DE COMPARACION
+            for(int y=0;y<listaMaterias.size()/materiasPorCarpeta;y++){
+                for(int u=0; u<materiasPorCarpeta;u++){
+                    System.out.print(" " + carpetas[y][u]);
+                }
+                System.out.println("");
+            }
+            System.out.println("");
+            System.out.println("----");
+            //System.out.println();
         }
-
+        /*
+        for(i=0;i<);i++){
+            for(int x=0;x<listaMaterias.size();x++)
+                System.out.print( v[i][x] + "  "); //IMPRIME PARA VER SI SE GUARDO CORRECTAMENTE
+        }*/
+        
     }
     
 
-    static int tupla=0;
 
     public static void helper(int[] array, int pos){  
         if(pos >= array.length - 1){   
