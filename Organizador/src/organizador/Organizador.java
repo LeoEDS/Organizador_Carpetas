@@ -6,13 +6,13 @@ import java.util.Scanner;
 public class Organizador {
         static ArrayList<Materias> listaMaterias = new ArrayList(); //ARRAY DE MATERIAS
         static ArrayList<Dias> diasMaterias = new ArrayList(); //ARRAY DE LAS MATERIAS QUE HAY CADA DIA: EL 0 ES LUNES Y EL 4 ES VIERNNES
-        static int v[][]; //VECTOR CON TODAS LAS POSIBILIDADES DE COMBBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
+        //static int v[][]; //VECTOR CON TODAS LAS POSIBILIDADES DE COMBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
         static int tupla=0;
         static int materiasPorCarpeta; // NUMERO DE MATERIAS QUE HAY POR CARPETA
 
     public static void main(String[] args) {
         Scanner scanf = new Scanner(System.in);
-        int i=0;
+        int i=1;
         int maximoCarpetasPorDia;
         String nombre;
 
@@ -27,7 +27,6 @@ public class Organizador {
 
         } while (!nombre.equals("0"));
         
-        int totalPosibilidades[] = new int [listaMaterias.size()]; // VECTOR CON NUMEROS DEL 0 AL 'X' CANTIDAD DE MATERIAS PARA ENTREGARLO A LA FUNCION QUE RELLENA LA MATRIZ CON TODAS LAS POSIBILIDADES
 
         System.out.println("");
         for(i=0; i<5; i++){
@@ -57,29 +56,29 @@ public class Organizador {
         maximoCarpetasPorDia = scanf.nextInt();
         
         
-        for(i=0;i<listaMaterias.size()-1;i++){
-            //System.out.println(i);
-            totalPosibilidades[i]=i;
-        }
         System.out.println("Cargando las Posibilades...");
-        v = new int[posibilidades(listaMaterias.size())][listaMaterias.size()];
-        helper(totalPosibilidades, 0);
-        // for(i=0;i<5;i++) System.out.println();
-        for(i=0;i<posibilidades(totalPosibilidades.length);i++) {
-            // System.out.println("eso " + (listaMaterias.size()/materiasPorCarpeta) + " mat " + materiasPorCarpeta);
-            // System.out.println("vamos con reglones" + posibilidades(totalPosibilidades.length));
+        ArrayList<Integer> totalPosibilidades = new ArrayList(); // VECTOR CON NUMEROS DEL 0 AL 'X' CANTIDAD DE MATERIAS PARA ENTREGARLO A LA FUNCION QUE RELLENA LA MATRIZ CON TODAS LAS POSIBILIDADES
+        for(i=1;i<listaMaterias.size();i++){
+            totalPosibilidades.add(i);
+        }
+        ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
+        // Set<ArrayList<Integer>> hs = new HashSet<ArrayList<Integer>>();
+        // for (i=0;i<res.size();i++){
+        //     hs.add(res.get(i));
+        // }
+        //res.forEach(System.out::println);
+        ////////////
+        
+        for(i=0;i<posibilidades(totalPosibilidades.size());i++) {
             int carpetas[][] = new int[listaMaterias.size()/materiasPorCarpeta][materiasPorCarpeta];
             int hor=0,ver=0;
             for(int x=1;x<listaMaterias.size(); x++){
-                // System.out.println(x%listaMaterias.size());
-                //System.out.println("es -> " + ((x%materiasPorCarpeta)));
                 if((x%materiasPorCarpeta)!=0) {
-                    carpetas[hor][ver]=v[i][x-1];
+                    carpetas[hor][ver]=res.get(i).get(x-1);
                     ver++;
                 } else {
-                    carpetas[hor][ver]=v[i][x-1];
+                    carpetas[hor][ver]=res.get(i).get(x-1);
                     hor++;
-                    //System.out.println("siiiiiiiiiiii " + x);
                     ver=0;
                 }
             }
@@ -95,17 +94,18 @@ public class Organizador {
                 if(x==4) imprimirCarpetaGanadora(carpetas, cantC);
             }
             
-            // ACA VA EL CODIGO DE COMPARACION
+            /*
+            // IMPRIME LA CARPETA
             for(int y=0;y<listaMaterias.size()/materiasPorCarpeta;y++){
                 for(int u=0; u<materiasPorCarpeta;u++){
                     System.out.print(" " + carpetas[y][u]);
                 }
                 System.out.println("");
             }
-            //System.out.println("");
-            //System.out.println("----");
-            //System.out.println();
-            
+            System.out.println("");
+            System.out.println("----");
+            System.out.println();
+            */
         }
         /*
         for(i=0;i<);i++){
@@ -116,7 +116,33 @@ public class Organizador {
     }
     
     public static int carpetasPorDia (int carpeta[][], Dias dia, ArrayList<Materias> materias) {
-        //COMPROBAR QUE DENTRO DE LAS CARPETA (o sea la variable carpeta[][]) SE ENCUENTRENN TODAS LAS MATERIAS (o sea los numeros de totalPosibilidades). Si no hace un return de -1
+        ArrayList<Integer> eleccionCarpeta = new ArrayList();
+        for(int i=0;i<dia.getMateriasDelDia().size();i++){
+            ///COMPRUEBA EL NUMERO DE LA MATERIA
+            int numeroMateria=-1;
+            for(int x=0;x<materias.size();x++){
+                if(materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i))) numeroMateria=materias.get(x).getId();
+            }
+            ///////
+            ///Empiza la Busqueda
+            for(int x=0;x<listaMaterias.size()/materiasPorCarpeta;x++){
+                for(int y=0;y<materiasPorCarpeta;y++){
+                    if(carpeta[x][y] == numeroMateria) {
+                        System.out.println("Encontre carpeta: " + materias.get(numeroMateria-1).getMateria() + " en el numero " + numeroMateria);
+                        eleccionCarpeta.add(x);
+                    }                    
+                }
+            }
+        }
+            System.out.println("CARPETA: ");
+            for(int i=0;i<listaMaterias.size()/materiasPorCarpeta;i++){
+                for(int x=0; x<materiasPorCarpeta;x++){
+                    System.out.print(" - " + carpeta[i][x]);
+                }
+                System.out.print(" | ");
+            }
+            System.out.println();
+            eleccionCarpeta.forEach(System.out::println);
         return -1;
     }
     
@@ -124,30 +150,42 @@ public class Organizador {
         //IMPRIME LA CARPETA Y LA CANTIDAD MAXIMA DE CARPETAS POR DÍA
     }
 
-    public static void helper(int[] array, int pos){  
-        if(pos >= array.length - 1){   
-            for(int i = 0; i < array.length-1; i++){
-                v[tupla][i]=array[i];
-            }  
-            if(array.length > 0)   
-                v[tupla][array.length-1]=array[array.length-1];
-            tupla++;
-            return;  
-        }  
 
-        for(int i = pos; i < array.length; i++){   
-          
-            int t = array[pos];  
-            array[pos] = array[i];  
-            array[i] = t;  
-  
-            helper(array, pos+1);  
-  
-            t = array[pos];  
-            array[pos] = array[i];  
-            array[i] = t;  
-        }  
-    }  
+   static void permutations(ArrayList<ArrayList<Integer>> res, ArrayList<Integer> nums, int l, int h) {
+       if (l == h) {
+           ArrayList<Integer> nums1 = new ArrayList<Integer>(nums);
+
+           res.add(nums1);
+           return;
+       }
+       for (int i = l; i <= h; i++) {
+
+           // Swapping
+           int left = nums.get(l);
+           nums.set(l, nums.get(i));
+           nums.set(i, left);
+
+           // Calling permutations for
+           // next greater value of l
+           permutations(res, nums, l + 1, h);
+
+           // Backtracking
+           left = nums.get(l);
+           nums.set(l, nums.get(i));
+           nums.set(i, left);
+       }
+   }
+
+   static ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> nums) {
+       // Declaring result variable
+       ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer> >();
+       int x = nums.size() - 1;
+       // Calling permutations for the first
+       // time by passing l
+       // as 0 and h = nums.size()-1
+       permutations(res, nums, 0, x);
+       return res;
+   }
     
     public static int posibilidades (int posi){
         if(posi<2)
