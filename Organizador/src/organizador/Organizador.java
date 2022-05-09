@@ -18,14 +18,16 @@ public class Organizador {
 
         System.out.println("Ingresando las Materias... (INGRESE UN 0 PARA TERMINAR)");
         System.out.println("");
-        do {
-            System.out.print("Ingrese el Nombre de la Materia" + i + " :  ");
-            nombre=scanf.nextLine();
-            i++;
+        
+        System.out.print("Ingrese el Nombre de la Materia " + i + " :  ");
+        nombre=scanf.nextLine();
+        while (!nombre.equals("0")) {
             Materias swap = new Materias(i, nombre);
             listaMaterias.add(swap);
-
-        } while (!nombre.equals("0"));
+            System.out.print("Ingrese el Nombre de la Materia " + i + " :  ");
+            nombre=scanf.nextLine();
+            i++;
+        } 
         
 
         System.out.println("");
@@ -40,12 +42,14 @@ public class Organizador {
                 case 4 : System.out.println(" VIERNES... (INGRESE UN 0 PARA TERMINAR)"); break;
             }
             ArrayList<String> dia = new ArrayList();
-            do {
+            System.out.print("Ingrese el Nombre de la Materia:  ");
+            nombre=scanf.nextLine();
+            while (!nombre.equals("0")) {
+                dia.add(nombre);
                 System.out.print("Ingrese el Nombre de la Materia:  ");
                 nombre=scanf.nextLine();
                 x++;
-                dia.add(nombre);
-            } while (!nombre.equals("0"));
+            } 
             Dias swap = new Dias(dia);
             diasMaterias.add(swap);
         }
@@ -58,7 +62,7 @@ public class Organizador {
         
         System.out.println("Cargando las Posibilades...");
         ArrayList<Integer> totalPosibilidades = new ArrayList(); // VECTOR CON NUMEROS DEL 0 AL 'X' CANTIDAD DE MATERIAS PARA ENTREGARLO A LA FUNCION QUE RELLENA LA MATRIZ CON TODAS LAS POSIBILIDADES
-        for(i=1;i<listaMaterias.size();i++){
+        for(i=1;i<=listaMaterias.size();i++){
             totalPosibilidades.add(i);
         }
         ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
@@ -70,13 +74,15 @@ public class Organizador {
         ////////////
         
         for(i=0;i<posibilidades(totalPosibilidades.size());i++) {
-            int carpetas[][] = new int[listaMaterias.size()/materiasPorCarpeta][materiasPorCarpeta];
+            int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
+            //System.out.println("hor " + (listaMaterias.size()/materiasPorCarpeta)+1 + " ver " + materiasPorCarpeta);
             int hor=0,ver=0;
-            for(int x=1;x<listaMaterias.size(); x++){
+            for(int x=1;x<=listaMaterias.size(); x++){
                 if((x%materiasPorCarpeta)!=0) {
                     carpetas[hor][ver]=res.get(i).get(x-1);
                     ver++;
                 } else {
+                    //System.out.println("sisiiisisiissisiissisiisisi" + res.get(i).get(x-1));
                     carpetas[hor][ver]=res.get(i).get(x-1);
                     hor++;
                     ver=0;
@@ -85,33 +91,12 @@ public class Organizador {
             
             int cantC[] = new int [5];
             for(int x=0; x<5;x++){
-                int swap = carpetasPorDia(carpetas, diasMaterias.get(x), listaMaterias);
-                if (swap==(-1)) break; //SIGNNIFICA QUE EN LA CARPETA FALTAN MATERIAS
-                cantC[x] = swap;
+                cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x), listaMaterias);
             }
-            for(int x=0;x<5;x++){
-                if(cantC[x]>materiasPorCarpeta || cantC[x]==-1) break;
-                if(x==4) imprimirCarpetaGanadora(carpetas, cantC);
-            }
-            
-            /*
-            // IMPRIME LA CARPETA
-            for(int y=0;y<listaMaterias.size()/materiasPorCarpeta;y++){
-                for(int u=0; u<materiasPorCarpeta;u++){
-                    System.out.print(" " + carpetas[y][u]);
-                }
-                System.out.println("");
-            }
-            System.out.println("");
-            System.out.println("----");
-            System.out.println();
-            */
+            int max=cantC[0];
+            for(int x=0;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
+            if(max<=maximoCarpetasPorDia) imprimirCarpetaGanadora(carpetas, cantC);
         }
-        /*
-        for(i=0;i<);i++){
-            for(int x=0;x<listaMaterias.size();x++)
-                System.out.print( v[i][x] + "  "); //IMPRIME PARA VER SI SE GUARDO CORRECTAMENTE
-        }*/
         
     }
     
@@ -121,33 +106,48 @@ public class Organizador {
             ///COMPRUEBA EL NUMERO DE LA MATERIA
             int numeroMateria=-1;
             for(int x=0;x<materias.size();x++){
+                //System.out.println(materias.get(x).getMateria() + " == " + dia.getMateriasDelDia().get(i) + ". Resultado: "  + materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i)));
                 if(materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i))) numeroMateria=materias.get(x).getId();
             }
             ///////
             ///Empiza la Busqueda
-            for(int x=0;x<listaMaterias.size()/materiasPorCarpeta;x++){
+            for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++){
                 for(int y=0;y<materiasPorCarpeta;y++){
+                        // System.out.println(carpeta [x][y] + " es " + numeroMateria);
                     if(carpeta[x][y] == numeroMateria) {
-                        System.out.println("Encontre carpeta: " + materias.get(numeroMateria-1).getMateria() + " en el numero " + numeroMateria);
+                        //System.out.println("Encontre carpeta: " + materias.get(numeroMateria-1).getMateria() + " en el numero " + numeroMateria);
                         eleccionCarpeta.add(x);
                     }                    
                 }
             }
         }
-            System.out.println("CARPETA: ");
-            for(int i=0;i<listaMaterias.size()/materiasPorCarpeta;i++){
-                for(int x=0; x<materiasPorCarpeta;x++){
-                    System.out.print(" - " + carpeta[i][x]);
+            ArrayList<Integer> carpetasEncontradas = new ArrayList();
+            
+            for(int i=0;i<eleccionCarpeta.size();i++){
+                // VERIFICA SI LA CARPETA YA SE HABIA ENCONTRADO
+                int boolYaEncontrada=0;
+                for(int x=0;x<carpetasEncontradas.size();x++){
+                    if(eleccionCarpeta.get(i)==carpetasEncontradas.get(x)) {
+                        boolYaEncontrada=1;
+                        break;
+                    }
                 }
-                System.out.print(" | ");
+                if (boolYaEncontrada==0) carpetasEncontradas.add(eleccionCarpeta.get(i));
             }
-            System.out.println();
-            eleccionCarpeta.forEach(System.out::println);
-        return -1;
+            //carpetasEncontradas.forEach(System.out::println);
+        return carpetasEncontradas.size() ;
     }
     
     public static void imprimirCarpetaGanadora(int carpeta[][], int CantC[]){
         //IMPRIME LA CARPETA Y LA CANTIDAD MAXIMA DE CARPETAS POR DÍA
+        System.out.print("CARPETA: ");
+            for(int y=0;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
+                for(int x=0; x<materiasPorCarpeta;x++){
+                    System.out.print(" - " + carpeta[y][x]);
+                }
+                System.out.print(" | ");
+            }
+            System.out.println();
     }
 
 
