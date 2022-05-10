@@ -88,10 +88,16 @@ public class Organizador {
                     ver=0;
                 }
             }
+            //ordena el vector verticalmente
+            for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) {
+                for(int y=0;y<materiasPorCarpeta;y++){
+                    ////////// CONTINUAR
+                }
+            }
             
             int cantC[] = new int [5];
             for(int x=0; x<5;x++){
-                cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x), listaMaterias);
+                cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x));
             }
             int max=cantC[0];
             for(int x=0;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
@@ -100,14 +106,14 @@ public class Organizador {
         
     }
     
-    public static int carpetasPorDia (int carpeta[][], Dias dia, ArrayList<Materias> materias) {
+    public static int carpetasPorDia (int carpeta[][], Dias dia) {
         ArrayList<Integer> eleccionCarpeta = new ArrayList();
         for(int i=0;i<dia.getMateriasDelDia().size();i++){
             ///COMPRUEBA EL NUMERO DE LA MATERIA
             int numeroMateria=-1;
-            for(int x=0;x<materias.size();x++){
+            for(int x=0;x<listaMaterias.size();x++){
                 //System.out.println(materias.get(x).getMateria() + " == " + dia.getMateriasDelDia().get(i) + ". Resultado: "  + materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i)));
-                if(materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i))) numeroMateria=materias.get(x).getId();
+                if(listaMaterias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i))) numeroMateria=listaMaterias.get(x).getId();
             }
             ///////
             ///Empiza la Busqueda
@@ -140,12 +146,15 @@ public class Organizador {
     
     public static void imprimirCarpetaGanadora(int carpeta[][], int CantC[]){
         //IMPRIME LA CARPETA Y LA CANTIDAD MAXIMA DE CARPETAS POR DÍA
-        System.out.print("CARPETA: ");
+        System.out.print("CARPETA: \n");
             for(int y=0;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
                 for(int x=0; x<materiasPorCarpeta;x++){
-                    System.out.print(" - " + carpeta[y][x]);
+                    System.out.print("  ");
+                    for(int i=0; i<listaMaterias.size();i++){
+                        if(carpeta[y][x]==listaMaterias.get(i).getId()) System.out.print(listaMaterias.get(i).getMateria());
+                    }
                 }
-                System.out.print(" | ");
+                System.out.println();
             }
             System.out.println();
     }
