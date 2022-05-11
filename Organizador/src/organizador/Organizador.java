@@ -88,7 +88,7 @@ public class Organizador {
                     ver=0;
                 }
             }
-            //ordena el vector verticalmente
+            //ordena el vector verticalmente y luego horizontalmente
             for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) {
                 for(int y=0;y<materiasPorCarpeta;y++){
                     ////////// CONTINUAR
@@ -100,7 +100,7 @@ public class Organizador {
                 cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x));
             }
             int max=cantC[0];
-            for(int x=0;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
+            for(int x=1;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
             if(max<=maximoCarpetasPorDia) imprimirCarpetaGanadora(carpetas, cantC);
         }
         
