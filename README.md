@@ -1,2 +1,2 @@
 # Calculador_Carpetas
-Organizador eficiente de Carpetas para la Escula
+Organizador eficiente de Carpetas para la Escuela
