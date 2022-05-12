@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Organizador {
         static ArrayList<Materias> listaMaterias = new ArrayList(); //ARRAY DE MATERIAS
         static ArrayList<Dias> diasMaterias = new ArrayList(); //ARRAY DE LAS MATERIAS QUE HAY CADA DIA: EL 0 ES LUNES Y EL 4 ES VIERNNES
-        //static int v[][]; //VECTOR CON TODAS LAS POSIBILIDADES DE COMBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
+        static ArrayList<ArrayList<Integer>> res = new ArrayList(); //VECTOR CON TODAS LAS POSIBILIDADES DE COMBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
         static int tupla=0;
         static int materiasPorCarpeta; // NUMERO DE MATERIAS QUE HAY POR CARPETA
 
@@ -65,13 +65,11 @@ public class Organizador {
         for(i=1;i<=listaMaterias.size();i++){
             totalPosibilidades.add(i);
         }
-        ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
-        // Set<ArrayList<Integer>> hs = new HashSet<ArrayList<Integer>>();
-        // for (i=0;i<res.size();i++){
-        //     hs.add(res.get(i));
-        // }
-        //res.forEach(System.out::println);
-        ////////////
+        
+        ArrayList<Integer> vacio = new ArrayList();
+        CargarPosi(totalPosibilidades, vacio);
+        
+        // ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
         
         for(i=0;i<posibilidades(totalPosibilidades.size());i++) {
             int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
@@ -159,7 +157,8 @@ public class Organizador {
             System.out.println();
     }
 
-
+    // VIEJO ALGORITMO
+/*
    static void permutations(ArrayList<ArrayList<Integer>> res, ArrayList<Integer> nums, int l, int h) {
        if (l == h) {
            ArrayList<Integer> nums1 = new ArrayList<Integer>(nums);
@@ -195,6 +194,29 @@ public class Organizador {
        permutations(res, nums, 0, x);
        return res;
    }
+   */
+    
+    public static void CargarPosi (ArrayList<Integer> totalPosibilidades, ArrayList<Integer> posibilidad) {
+        for(int i=0;i<totalPosibilidades.size();i++) { //posibilidades(totalPosibilidades.size())/cant
+            if(totalPosibilidades.size() == 1) { // Si queda solo un numero lo agrega al arraylist y lo guarda ese array en el arraylist de los otros arraylist
+                posibilidad.add(totalPosibilidades.get(0));
+                res.add(posibilidad);
+                //return;
+            } else { // Aplica la recursion
+                // Agrega el numero dentro de otro array para Pasarselo a la Recursion
+                ArrayList<Integer> posiSwap = new ArrayList(); 
+                    posibilidad.forEach((n) -> posiSwap.add(n));
+                    posiSwap.add(totalPosibilidades.get(i));
+                    
+                // Elimina el numero que se colocó en el Array y le Pasa a la recurción el array sin ese numero
+                ArrayList<Integer> swap = new ArrayList(); 
+                    totalPosibilidades.forEach((n) -> swap.add(n));
+                    swap.remove(i);
+
+                CargarPosi(swap, posiSwap);
+            }
+        }
+    }
     
     public static int posibilidades (int posi){
         if(posi<2)
