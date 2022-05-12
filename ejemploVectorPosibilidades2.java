@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class prueba2 {
+public class ejemploVectorPosibilidades2 {
 
     static ArrayList<ArrayList<Integer>> v = new ArrayList();
 
