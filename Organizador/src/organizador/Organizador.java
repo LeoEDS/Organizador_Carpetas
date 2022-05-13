@@ -24,10 +24,10 @@ public class Organizador {
         while (!nombre.equals("0")) {
             Materias swap = new Materias(i, nombre);
             listaMaterias.add(swap);
+            i++;
             System.out.print("Ingrese el Nombre de la Materia " + i + " :  ");
             nombre=scanf.nextLine();
-            i++;
-        } 
+        }
         
 
         System.out.println("");
@@ -70,7 +70,8 @@ public class Organizador {
         CargarPosi(totalPosibilidades, vacio);
         
         // ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
-        
+
+        ArrayList<int[][]> carpetasHistorial = new ArrayList();
         for(i=0;i<posibilidades(totalPosibilidades.size());i++) {
             int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
             //System.out.println("hor " + (listaMaterias.size()/materiasPorCarpeta)+1 + " ver " + materiasPorCarpeta);
@@ -86,22 +87,58 @@ public class Organizador {
                     ver=0;
                 }
             }
-            //ordena el vector verticalmente y luego horizontalmente
-            for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) {
-                for(int y=0;y<materiasPorCarpeta;y++){
-                    ////////// CONTINUAR
+            //ordena la Matriz "carpeta" horizontalmente y luego verticalmente
+            for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) { // por cada vector...
+                for(int z=0;z<materiasPorCarpeta;z++){ // Repetir la cantidad de veces de largo del vector
+                    for(int y=1;y<materiasPorCarpeta;y++){ // Recorrer por cada materia
+                        if(carpetas[x][y-1] > carpetas[x][y]) { // Aplica Burbujeo
+                            int swap = carpetas[x][y-1];
+                            carpetas[x][y-1] = carpetas[x][y];
+                            carpetas[x][y] = swap;
+                        }
+                    }
+                }
+            }
+            for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) { // Repetir la cant. de veces de largo del vector...
+                for(int y=1;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
+                    if(carpetas[y-1][0] > carpetas[y-1][0]) { // Aplica Burbujeo
+                        int swap[][] = new int[1][materiasPorCarpeta];
+                        for(int z=0;z<materiasPorCarpeta;z++){
+                            swap[0][z] = carpetas[x][y-1];
+                        }
+                    }
                 }
             }
             
-            int cantC[] = new int [5];
-            for(int x=0; x<5;x++){
-                cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x));
+            // Busque que no haya repetidos anteriores
+            int Encontrado=0;
+            if (carpetasHistorial.isEmpty()) carpetasHistorial.add(carpetas);
+            else {
+                for(int x=0;x<carpetasHistorial.size();x++) {
+                    int coincidencias=0;
+                    for(int y=0;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
+                        for(int z=0;z<materiasPorCarpeta;z++){
+                            if(carpetas[y][z] == carpetasHistorial.get(x)[y][z]) coincidencias++;
+                        }
+                    }
+                    System.out.println(coincidencias + " de " + listaMaterias.size());
+                    if(coincidencias>=listaMaterias.size()) Encontrado=1;
+                }
             }
-            int max=cantC[0];
-            for(int x=1;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
-            if(max<=maximoCarpetasPorDia) imprimirCarpetaGanadora(carpetas, cantC);
+            
+            if(Encontrado==0) {
+                carpetasHistorial.add(carpetas);
+                int cantC[] = new int [5];
+                for(int x=0; x<5;x++){
+                    cantC[x] = carpetasPorDia(carpetas, diasMaterias.get(x));
+                }
+                int max=cantC[0];
+                for(int x=1;x<cantC.length;x++) if(max<cantC[x]) max=cantC[x];
+                if(max<=maximoCarpetasPorDia) imprimirCarpetaGanadora(carpetas, cantC);
+            }
+            
+
         }
-        
     }
     
     public static int carpetasPorDia (int carpeta[][], Dias dia) {
@@ -131,7 +168,7 @@ public class Organizador {
                 // VERIFICA SI LA CARPETA YA SE HABIA ENCONTRADO
                 int boolYaEncontrada=0;
                 for(int x=0;x<carpetasEncontradas.size();x++){
-                    if(eleccionCarpeta.get(i)==carpetasEncontradas.get(x)) {
+                    if(eleccionCarpeta.get(i).equals(carpetasEncontradas.get(x))) {
                         boolYaEncontrada=1;
                         break;
                     }
