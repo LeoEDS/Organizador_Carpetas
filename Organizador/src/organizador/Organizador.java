@@ -7,7 +7,6 @@ public class Organizador {
         static ArrayList<Materias> listaMaterias = new ArrayList(); //ARRAY DE MATERIAS
         static ArrayList<Dias> diasMaterias = new ArrayList(); //ARRAY DE LAS MATERIAS QUE HAY CADA DIA: EL 0 ES LUNES Y EL 4 ES VIERNNES
         static ArrayList<ArrayList<Integer>> res = new ArrayList(); //VECTOR CON TODAS LAS POSIBILIDADES DE COMBINACION. CONTIENE NUMERO DEL 0 HASTA 'X' CANTIDAD DE MATERIAS QUE SE HAYAN INGRESADO. CADA NUMERO DEL 0 A 'X' REPRESENTA UN ID DE MATERIA
-        static int tupla=0;
         static int materiasPorCarpeta; // NUMERO DE MATERIAS QUE HAY POR CARPETA
 
     public static void main(String[] args) {
@@ -18,7 +17,7 @@ public class Organizador {
 
         System.out.println("Ingresando las Materias... (INGRESE UN 0 PARA TERMINAR)");
         System.out.println("");
-        
+
         System.out.print("Ingrese el Nombre de la Materia " + i + " :  ");
         nombre=scanf.nextLine();
         while (!nombre.equals("0")) {
@@ -28,12 +27,10 @@ public class Organizador {
             System.out.print("Ingrese el Nombre de la Materia " + i + " :  ");
             nombre=scanf.nextLine();
         }
-        
 
         System.out.println("");
         for(i=0; i<5; i++){
-            int x=0;
-            System.out.print("Ingresando la Materia de los Dias ");
+            System.out.print("Ingresando las Materias de los Dias ");
             switch(i){
                 case 0 : System.out.println(" LUNES... (INGRESE UN 0 PARA TERMINAR)"); break;
                 case 1 : System.out.println(" MARTES... (INGRESE UN 0 PARA TERMINAR)"); break;
@@ -48,7 +45,6 @@ public class Organizador {
                 dia.add(nombre);
                 System.out.print("Ingrese el Nombre de la Materia:  ");
                 nombre=scanf.nextLine();
-                x++;
             } 
             Dias swap = new Dias(dia);
             diasMaterias.add(swap);
@@ -65,23 +61,19 @@ public class Organizador {
         for(i=1;i<=listaMaterias.size();i++){
             totalPosibilidades.add(i);
         }
-        
         ArrayList<Integer> vacio = new ArrayList();
-        CargarPosi(totalPosibilidades, vacio);
+        cargarPosi(totalPosibilidades, vacio);
         
-        // ArrayList<ArrayList<Integer>> res = permute(totalPosibilidades);
-
         ArrayList<int[][]> carpetasHistorial = new ArrayList();
-        for(i=0;i<posibilidades(totalPosibilidades.size());i++) {
+        for(i=0;i<posibilidades(totalPosibilidades.size());i++) { // Por cada Carpeta
+
             int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
-            //System.out.println("hor " + (listaMaterias.size()/materiasPorCarpeta)+1 + " ver " + materiasPorCarpeta);
-            int hor=0,ver=0;
-            for(int x=1;x<=listaMaterias.size(); x++){
+            int hor=0,ver=0; // TODO: INTENTAR MEJORAR LA EFICIENCIA, QUITANDO AMBAS VARIABLES Y REEMPLAZARLAS EN EL FOR DE ABAJO
+            for(int x=1;x<=listaMaterias.size(); x++) {
                 if((x%materiasPorCarpeta)!=0) {
                     carpetas[hor][ver]=res.get(i).get(x-1);
                     ver++;
                 } else {
-                    //System.out.println("sisiiisisiissisiissisiisisi" + res.get(i).get(x-1));
                     carpetas[hor][ver]=res.get(i).get(x-1);
                     hor++;
                     ver=0;
@@ -126,7 +118,7 @@ public class Organizador {
                 }
             }
             
-            if(Encontrado==0) {
+            if(Encontrado==0) { // Si no se encontró un vector igual, imprimirlo
                 carpetasHistorial.add(carpetas);
                 int cantC[] = new int [5];
                 for(int x=0; x<5;x++){
@@ -147,16 +139,12 @@ public class Organizador {
             ///COMPRUEBA EL NUMERO DE LA MATERIA
             int numeroMateria=-1;
             for(int x=0;x<listaMaterias.size();x++){
-                //System.out.println(materias.get(x).getMateria() + " == " + dia.getMateriasDelDia().get(i) + ". Resultado: "  + materias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i)));
                 if(listaMaterias.get(x).getMateria().equalsIgnoreCase(dia.getMateriasDelDia().get(i))) numeroMateria=listaMaterias.get(x).getId();
             }
-            ///////
             ///Empiza la Busqueda
             for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++){
                 for(int y=0;y<materiasPorCarpeta;y++){
-                        // System.out.println(carpeta [x][y] + " es " + numeroMateria);
                     if(carpeta[x][y] == numeroMateria) {
-                        //System.out.println("Encontre carpeta: " + materias.get(numeroMateria-1).getMateria() + " en el numero " + numeroMateria);
                         eleccionCarpeta.add(x);
                     }                    
                 }
@@ -175,7 +163,6 @@ public class Organizador {
                 }
                 if (boolYaEncontrada==0) carpetasEncontradas.add(eleccionCarpeta.get(i));
             }
-            //carpetasEncontradas.forEach(System.out::println);
         return carpetasEncontradas.size() ;
     }
     
@@ -233,8 +220,8 @@ public class Organizador {
    }
    */
     
-    public static void CargarPosi (ArrayList<Integer> totalPosibilidades, ArrayList<Integer> posibilidad) {
-        for(int i=0;i<totalPosibilidades.size();i++) { //posibilidades(totalPosibilidades.size())/cant
+    public static void cargarPosi (ArrayList<Integer> totalPosibilidades, ArrayList<Integer> posibilidad) {
+        for(int i=0;i<totalPosibilidades.size();i++) { 
             if(totalPosibilidades.size() == 1) { // Si queda solo un numero lo agrega al arraylist y lo guarda ese array en el arraylist de los otros arraylist
                 posibilidad.add(totalPosibilidades.get(0));
                 res.add(posibilidad);
@@ -250,7 +237,7 @@ public class Organizador {
                     totalPosibilidades.forEach((n) -> swap.add(n));
                     swap.remove(i);
 
-                CargarPosi(swap, posiSwap);
+                cargarPosi(swap, posiSwap);
             }
         }
     }
