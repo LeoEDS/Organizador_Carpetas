@@ -68,8 +68,10 @@ public class Organizador {
         for(i=0;i<posibilidades(totalPosibilidades.size());i++) { // Por cada Carpeta
 
             int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
-            int hor=0,ver=0; // TODO: INTENTAR MEJORAR LA EFICIENCIA, QUITANDO AMBAS VARIABLES Y REEMPLAZARLAS EN EL FOR DE ABAJO
+            //int hor=0,ver=0;
             for(int x=1;x<=listaMaterias.size(); x++) {
+                carpetas[(x-1)/materiasPorCarpeta][(x-1)%materiasPorCarpeta]=res.get(i).get(x-1);
+                /*
                 if((x%materiasPorCarpeta)!=0) {
                     carpetas[hor][ver]=res.get(i).get(x-1);
                     ver++;
@@ -78,8 +80,10 @@ public class Organizador {
                     hor++;
                     ver=0;
                 }
+                */
             }
-            //ordena la Matriz "carpeta" horizontalmente y luego verticalmente
+            // LENTO
+            // ordena la Matriz "carpeta" horizontalmente y luego verticalmente
             for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) { // por cada vector...
                 for(int z=0;z<materiasPorCarpeta;z++){ // Repetir la cantidad de veces de largo del vector
                     for(int y=1;y<materiasPorCarpeta;y++){ // Recorrer por cada materia
@@ -113,7 +117,6 @@ public class Organizador {
                             if(carpetas[y][z] == carpetasHistorial.get(x)[y][z]) coincidencias++;
                         }
                     }
-                    System.out.println(coincidencias + " de " + listaMaterias.size());
                     if(coincidencias>=listaMaterias.size()) Encontrado=1;
                 }
             }
