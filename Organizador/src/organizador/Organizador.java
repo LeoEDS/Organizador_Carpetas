@@ -57,6 +57,11 @@ public class Organizador {
         
         
         System.out.println("Cargando las Posibilades...");
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
         ArrayList<Integer> totalPosibilidades = new ArrayList(); // VECTOR CON NUMEROS DEL 0 AL 'X' CANTIDAD DE MATERIAS PARA ENTREGARLO A LA FUNCION QUE RELLENA LA MATRIZ CON TODAS LAS POSIBILIDADES
         for(i=1;i<=listaMaterias.size();i++){
             totalPosibilidades.add(i);
@@ -164,10 +169,10 @@ public class Organizador {
         for(int x=0; x<5; x++){
             switch(x){
                 case 0 : System.out.print("     LUNES: "); break;
-                case 1 : System.out.print(" ;MARTES: "); break;
-                case 2 : System.out.print(" ;MIERCOLES: "); break;
-                case 3 : System.out.print(" ;JUEVES: "); break;
-                case 4 : System.out.print(" ;VIERNES: "); break;
+                case 1 : System.out.print(" ; MARTES: "); break;
+                case 2 : System.out.print(" ; MIERCOLES: "); break;
+                case 3 : System.out.print(" ; JUEVES: "); break;
+                case 4 : System.out.print(" ; VIERNES: "); break;
             }
             System.out.print(cantC[x]);
         }
@@ -196,7 +201,6 @@ public class Organizador {
             if(totalPosibilidades.size() == 1) { // Si queda solo un numero lo agrega al arraylist y lo guarda ese array en el arraylist de los otros arraylist
                 posibilidad.add(totalPosibilidades.get(0));
                 res.add(posibilidad);
-                //return;
             } else { // Aplica la recursion
                 // Agrega el numero dentro de otro array para Pasarselo a la Recursion
                 ArrayList<Integer> posiSwap = new ArrayList(); 
