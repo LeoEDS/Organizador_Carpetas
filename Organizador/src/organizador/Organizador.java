@@ -66,27 +66,16 @@ public class Organizador {
         
         ArrayList<int[][]> carpetasHistorial = new ArrayList();
         for(i=0;i<posibilidades(totalPosibilidades.size());i++) { // Por cada Carpeta
-
             int carpetas[][] = new int[(listaMaterias.size()/materiasPorCarpeta)+1][materiasPorCarpeta];
-            //int hor=0,ver=0;
             for(int x=1;x<=listaMaterias.size(); x++) {
                 carpetas[(x-1)/materiasPorCarpeta][(x-1)%materiasPorCarpeta]=res.get(i).get(x-1);
-                /*
-                if((x%materiasPorCarpeta)!=0) {
-                    carpetas[hor][ver]=res.get(i).get(x-1);
-                    ver++;
-                } else {
-                    carpetas[hor][ver]=res.get(i).get(x-1);
-                    hor++;
-                    ver=0;
-                }
-                */
+
             }
-            // LENTO
             // ordena la Matriz "carpeta" horizontalmente y luego verticalmente
             for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) { // por cada vector...
                 for(int z=0;z<materiasPorCarpeta;z++){ // Repetir la cantidad de veces de largo del vector
                     for(int y=1;y<materiasPorCarpeta;y++){ // Recorrer por cada materia
+                        if(carpetas[x][y-1] == 0) carpetas[x][y-1] = 2147483647; // si es 0, o sea vacio, lo llena con el int mas grande
                         if(carpetas[x][y-1] > carpetas[x][y]) { // Aplica Burbujeo
                             int swap = carpetas[x][y-1];
                             carpetas[x][y-1] = carpetas[x][y];
@@ -97,11 +86,11 @@ public class Organizador {
             }
             for(int x=0;x<(listaMaterias.size()/materiasPorCarpeta)+1;x++) { // Repetir la cant. de veces de largo del vector...
                 for(int y=1;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
-                    if(carpetas[y-1][0] > carpetas[y-1][0]) { // Aplica Burbujeo
-                        int swap[][] = new int[1][materiasPorCarpeta];
-                        for(int z=0;z<materiasPorCarpeta;z++){
-                            swap[0][z] = carpetas[x][y-1];
-                        }
+                    if(carpetas[y-1][0] > carpetas[y][0]) { // Aplica Burbujeo
+                        int swap[] = new int[materiasPorCarpeta];
+                        System.arraycopy(carpetas[y-1], 0, swap, 0, materiasPorCarpeta); //System.out.println(swap[z]);
+                        System.arraycopy(carpetas[y], 0, carpetas[y-1], 0, materiasPorCarpeta);
+                        System.arraycopy(swap, 0, carpetas[y], 0, materiasPorCarpeta);
                     }
                 }
             }
@@ -117,7 +106,7 @@ public class Organizador {
                             if(carpetas[y][z] == carpetasHistorial.get(x)[y][z]) coincidencias++;
                         }
                     }
-                    if(coincidencias>=listaMaterias.size()) Encontrado=1;
+                    if(coincidencias>listaMaterias.size()) Encontrado=1;
                 }
             }
             
@@ -169,12 +158,26 @@ public class Organizador {
         return carpetasEncontradas.size() ;
     }
     
-    public static void imprimirCarpetaGanadora(int carpeta[][], int CantC[]){
+    public static void imprimirCarpetaGanadora(int carpeta[][], int cantC[]){
         //IMPRIME LA CARPETA Y LA CANTIDAD MAXIMA DE CARPETAS POR DÍA
-        System.out.print("CARPETA: \n");
+        int totalC=0;
+        for(int x=0; x<5; x++){
+            switch(x){
+                case 0 : System.out.print("     LUNES: "); break;
+                case 1 : System.out.print(" ;MARTES: "); break;
+                case 2 : System.out.print(" ;MIERCOLES: "); break;
+                case 3 : System.out.print(" ;JUEVES: "); break;
+                case 4 : System.out.print(" ;VIERNES: "); break;
+            }
+            System.out.print(cantC[x]);
+        }
+        System.out.println("");
+        for(int x=0;x<cantC.length;x++) totalC+=cantC[x];
+        System.out.println("     Cantidad de Carpetas Semanal: " + totalC);
+        System.out.print("     CARPETA: \n");
             for(int y=0;y<(listaMaterias.size()/materiasPorCarpeta)+1;y++){
                 for(int x=0; x<materiasPorCarpeta;x++){
-                    System.out.print("  ");
+                    System.out.print("       ");
                     for(int i=0; i<listaMaterias.size();i++){
                         if(carpeta[y][x]==listaMaterias.get(i).getId()) System.out.print(listaMaterias.get(i).getMateria());
                     }
@@ -182,46 +185,11 @@ public class Organizador {
                 System.out.println();
             }
             System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
+            System.out.println();
     }
-
-    // VIEJO ALGORITMO
-/*
-   static void permutations(ArrayList<ArrayList<Integer>> res, ArrayList<Integer> nums, int l, int h) {
-       if (l == h) {
-           ArrayList<Integer> nums1 = new ArrayList<Integer>(nums);
-
-           res.add(nums1);
-           return;
-       }
-       for (int i = l; i <= h; i++) {
-
-           // Swapping
-           int left = nums.get(l);
-           nums.set(l, nums.get(i));
-           nums.set(i, left);
-
-           // Calling permutations for
-           // next greater value of l
-           permutations(res, nums, l + 1, h);
-
-           // Backtracking
-           left = nums.get(l);
-           nums.set(l, nums.get(i));
-           nums.set(i, left);
-       }
-   }
-
-   static ArrayList<ArrayList<Integer>> permute(ArrayList<Integer> nums) {
-       // Declaring result variable
-       ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer> >();
-       int x = nums.size() - 1;
-       // Calling permutations for the first
-       // time by passing l
-       // as 0 and h = nums.size()-1
-       permutations(res, nums, 0, x);
-       return res;
-   }
-   */
     
     public static void cargarPosi (ArrayList<Integer> totalPosibilidades, ArrayList<Integer> posibilidad) {
         for(int i=0;i<totalPosibilidades.size();i++) { 
